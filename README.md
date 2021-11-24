@@ -1,3 +1,10 @@
+# Clipboard Speaker.
+
+> Want your computer
+> to speak a bit?
+> Mark some text
+> and let it rip.
+
 ## Installation:
 
 1. Install the infrastructure: `apt install daemonize espeak-ng xsel`
