@@ -1,9 +1,9 @@
 # Clipboard Speaker.
 
-   Want your computer
-   to speak a bit?
-   Mark some text
-   and let it rip.
+    Want your computer
+    to speak a bit?
+    Mark some text
+    and let it rip.
 
 ## Installation:
 
