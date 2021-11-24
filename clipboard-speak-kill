@@ -1,0 +1,6 @@
+#!/bin/sh
+
+clipboard_speaker_directory="$HOME/.clipboard-speaker/"
+pid_file_path="$clipboard_speaker_directory/pid"
+
+kill "$(cat "$pid_file_path")"
