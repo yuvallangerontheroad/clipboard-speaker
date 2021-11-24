@@ -1,9 +1,9 @@
 #!/bin/sh
 
 clipboard_speaker_directory="$HOME/.clipboard-speaker"
-lock_file_path="$clipboardspeakerdir/lock"
-pid_file_path="$clipboardspeakerdir/pid"
-fifo_path="$clipboardspeakerdir/fifo"
+lock_file_path="$clipboard_speaker_directory/lock"
+pid_file_path="$clipboard_speaker_directory/pid"
+fifo_path="$clipboard_speaker_directory/fifo"
 speak_ng_path="$(which speak-ng)"
 
 mkdir -p "$clipboard_speaker_directory"
@@ -11,4 +11,4 @@ mkfifo --mode=600 "$fifo_path"
 
 xsel -p | tr '\n' ' ' > "$fifo_path" &
 
-daemonize -l "$lock_file_path" -p "$pid_file_path" "$speak_ng_path" -f "$fifo_path"
+daemonize -v -l "$lock_file_path" -p "$pid_file_path" "$speak_ng_path" -f "$fifo_path"
