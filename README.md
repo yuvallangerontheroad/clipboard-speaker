@@ -5,6 +5,12 @@
     Mark some text
     and let it rip.
 
+Not a fancy curiosity but an accessibility tool for people with reading disabilities. I use it every day to read.
+
+1. Select some text.
+2. Press the keybinding to start `clipboard-reader`. Your computer is now speaking the stuff in the selection.
+3. (optional) Press the other keybinding to start `clipboard-reader-kill` and make computer stop speaking.
+
 ## Installation:
 
 1. Install the infrastructure: `apt install daemonize espeak-ng xsel`
