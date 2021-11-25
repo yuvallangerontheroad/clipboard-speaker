@@ -11,8 +11,15 @@ Not a fancy curiosity but an accessibility tool for people with reading disabili
 2. Press the keybinding to start `clipboard-reader`. Your computer is now speaking the stuff in the selection.
 3. (optional) Press the other keybinding to start `clipboard-reader-kill` and make computer stop speaking.
 
+## Changelog:
+
+Have a look at the <a href="CHANGELOG.md">CHANGELOG.md</a> file.
+
 ## Installation:
 
-1. Install the infrastructure: `apt install daemonize espeak-ng xsel`
-2. Copy the two executable scripts into your home bin directory: `cp clipboard-speaker clipboard-speaker-kill ~/bin/`
-3. Add the key bindings in `Gnome Settings → Keyboard Shortcuts → All the way down and press the + button`
+1. Install the infrastructure:
+    `apt install daemonize espeak-ng xsel`
+2. Copy the two executable scripts into your home bin directory:
+    `cp clipboard-speaker clipboard-speaker-kill ~/bin/`
+3. Add the key bindings in:
+    `Gnome Settings → Keyboard Shortcuts → All the way down and press the + button`
