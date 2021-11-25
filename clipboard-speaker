@@ -6,8 +6,15 @@ pid_file_path="$clipboard_speaker_directory/pid"
 fifo_path="$clipboard_speaker_directory/fifo"
 speak_ng_path="$(which speak-ng)"
 
+
 mkdir -p "$clipboard_speaker_directory"
 mkfifo --mode=600 "$fifo_path"
+
+# pgrep speak-ng >/dev/null || speak-ng -f "$fifo_path"
+# pgrep speak-ng >/dev/null || {
+#    echo $$ > "$pid_file_path"
+#    speak-ng -f "$fifo_path"
+# }
 
 xsel -p | tr '\n' ' ' > "$fifo_path" &
 
