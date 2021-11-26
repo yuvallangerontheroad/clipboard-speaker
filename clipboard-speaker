@@ -1,21 +1,63 @@
-#!/bin/sh
+#!/usr/bin/env python3
 
-clipboard_speaker_directory="$HOME/.clipboard-speaker"
-lock_file_path="$clipboard_speaker_directory/lock"
-pid_file_path="$clipboard_speaker_directory/pid"
-fifo_path="$clipboard_speaker_directory/fifo"
-speak_ng_path="$(which speak-ng)"
+import os
+from pathlib import Path
+from subprocess import Popen, PIPE
+
+DEFAULT_WORDS_PER_MINUTE = "175"
+
+CLIPBOARD_SPEAKER_PATH = Path.home() / ".clipboard-speaker"
+PID_FILE_PATH = CLIPBOARD_SPEAKER_PATH / "pid"
+FIFO_FILE_PATH = CLIPBOARD_SPEAKER_PATH / "fifo"
+
+WORDS_PER_MINUTE_PATH = CLIPBOARD_SPEAKER_PATH / "words-per-minute"
 
 
-mkdir -p "$clipboard_speaker_directory"
-mkfifo --mode=600 "$fifo_path"
+def get_words_per_minute() -> str:
+    if not WORDS_PER_MINUTE_PATH.exists():
+        with WORDS_PER_MINUTE_PATH.open("w") as words_per_minute_file:
+            words_per_minute_file.write(DEFAULT_WORDS_PER_MINUTE)
+            return DEFAULT_WORDS_PER_MINUTE
 
-# pgrep speak-ng >/dev/null || speak-ng -f "$fifo_path"
-# pgrep speak-ng >/dev/null || {
-#    echo $$ > "$pid_file_path"
-#    speak-ng -f "$fifo_path"
-# }
+    with WORDS_PER_MINUTE_PATH.open("r") as words_per_minute_file:
+        words_per_minute = words_per_minute_file.read().strip()
 
-xsel -p | tr '\n' ' ' > "$fifo_path" &
+    return words_per_minute
 
-daemonize -v -l "$lock_file_path" -p "$pid_file_path" "$speak_ng_path" -f "$fifo_path"
+
+if __name__ == "__main__":
+    words_per_minute = get_words_per_minute()
+    try:
+        os.mkfifo(FIFO_FILE_PATH, mode=0o600)
+    except FileExistsError:
+        pass
+
+    # https://stackoverflow.com/questions/63132778/how-to-use-fifo-named-pipe-as-stdin-in-popen-python
+    fifo_read_file = os.open(FIFO_FILE_PATH, os.O_RDONLY | os.O_NONBLOCK)
+    fifo_write_file = os.open(FIFO_FILE_PATH, os.O_WRONLY)
+
+    Popen(
+        ["xsel", "-p"],
+        stdout=fifo_write_file,
+    )
+    os.close(fifo_write_file)
+
+    if not PID_FILE_PATH.exists():
+        speak_ng_process = Popen(
+            [
+                "speak-ng",
+                f"-s {words_per_minute}",
+            ],
+            stdin=fifo_read_file,
+        )
+        os.close(fifo_read_file)
+
+        with PID_FILE_PATH.open("w") as pid_file:
+            pid_file.write(str(speak_ng_process.pid))
+
+        try:
+            speak_ng_process.wait()
+        except KeyboardInterrupt as e:
+            os.remove(PID_FILE_PATH)
+
+        os.remove(PID_FILE_PATH)

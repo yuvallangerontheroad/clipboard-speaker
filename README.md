@@ -5,17 +5,43 @@
     Mark some text
     and let it rip.
 
-Not a fancy curiosity but an accessibility tool for people with reading disabilities. I use it every day to read.
+Not a fancy curiosity but an accessibility tool for people with reading
+disabilities. I use it every day to read.
 
-1. Select some text.
-2. Press the keybinding to start `clipboard-reader`. Your computer is now speaking the stuff in the selection.
-3. (optional) Press the other keybinding to start `clipboard-reader-kill` and make computer stop speaking.
+It basically reads whatever you mark with your mouse cursor.
 
 ## Changelog:
 
 Have a look at the <a href="CHANGELOG.md">CHANGELOG.md</a> file.
 
-## Installation:
+## Newer Python version:
+
+### Installation:
+
+1. Install the infrastructure:
+    `apt install espeak-ng xsel python3`
+2. Copy the two executable scripts into your home bin directory:
+    `cp clipboard-speaker clipboard-speaker-kill ~/bin/`
+3. Add the key bindings in (if you use Gnome. If you don't, look up how to
+    assign scripts to keybindings in your own window manager):
+    `Gnome Settings → Keyboard Shortcuts → All the way down and press the + button`
+
+### Usage:
+
+1. Select some text. While the text is highlighted,
+2. press the keybinding assigned to the `clipboard-reader` executable to start
+    the reading of the highlighted text.
+3. (optional, while `clipboard-speaker` is reading the text) Select some more
+    text and press the keybinding that starts `clipboard-reader`. The selected
+    text will be added to the text buffer and will be read right after the last
+    bunch of text.
+4. (optional) GOTO 3.
+5. (optional) Press the other keybinding assigned to the `clipboard-reader-kill`
+    script to make your computer stop speaking and clear the text buffer.
+
+## Older shell version:
+
+### Installation:
 
 1. Install the infrastructure:
     `apt install daemonize espeak-ng xsel`
@@ -23,3 +49,9 @@ Have a look at the <a href="CHANGELOG.md">CHANGELOG.md</a> file.
     `cp clipboard-speaker clipboard-speaker-kill ~/bin/`
 3. Add the key bindings in:
     `Gnome Settings → Keyboard Shortcuts → All the way down and press the + button`
+
+### Usage:
+
+1. Select some text.
+2. Press the keybinding to start `clipboard-reader`. Your computer is now speaking the stuff in the selection.
+3. (optional) Press the other keybinding to start `clipboard-reader-kill` and make computer stop speaking.
