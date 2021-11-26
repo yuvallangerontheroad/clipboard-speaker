@@ -8,6 +8,7 @@ DEFAULT_WORDS_PER_MINUTE = "175"
 
 CLIPBOARD_SPEAKER_PATH = Path.home() / ".clipboard-speaker"
 PID_FILE_PATH = CLIPBOARD_SPEAKER_PATH / "pid"
+FIFO_FILE_PATH = CLIPBOARD_SPEAKER_PATH / "fifo"
 
 WORDS_PER_MINUTE_PATH = CLIPBOARD_SPEAKER_PATH / "words-per-minute"
 
@@ -26,15 +27,30 @@ def get_words_per_minute() -> str:
 
 if __name__ == "__main__":
     words_per_minute = get_words_per_minute()
+    try:
+        os.mkfifo(FIFO_FILE_PATH, mode=0o600)
+    except FileExistsError:
+        pass
+
+    # https://stackoverflow.com/questions/63132778/how-to-use-fifo-named-pipe-as-stdin-in-popen-python
+    fifo_read_file = os.open(FIFO_FILE_PATH, os.O_RDONLY | os.O_NONBLOCK)
+    fifo_write_file = os.open(FIFO_FILE_PATH, os.O_WRONLY)
+
+    Popen(
+        ["xsel", "-p"],
+        stdout=fifo_write_file,
+    )
+    os.close(fifo_write_file)
 
     if not PID_FILE_PATH.exists():
-        xsel_process = Popen(["xsel", "-p"], stdout=PIPE)
-
         speak_ng_process = Popen(
-            ["speak-ng", f"-s {words_per_minute}", "--stdin"],
-            stdin=xsel_process.stdout,
-            stdout=PIPE,
+            [
+                "speak-ng",
+                f"-s {words_per_minute}",
+            ],
+            stdin=fifo_read_file,
         )
+        os.close(fifo_read_file)
 
         with PID_FILE_PATH.open("w") as pid_file:
             pid_file.write(str(speak_ng_process.pid))
