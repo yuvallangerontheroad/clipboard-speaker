@@ -6,6 +6,12 @@ Something something UNIX philosophy.
 
 There is now a `~/.clipboard-speaker/words-per-minute` setting file for the Python version.
 
+Switched (again) to FIFO so you can:
+
+10. Marking text and press the keybinding that runs clipboard-speaker as usual. While clipboard-speaker is running and speaking, you can
+20. Mark more text and press the keybindings for it to feed more text into clipboard-speaker's text buffer, and if you wish
+30. GOTO 20.
+
 ## 2021-11-25
 
 Trying to remove the daemonize dependency, but I don't know how to kill the
