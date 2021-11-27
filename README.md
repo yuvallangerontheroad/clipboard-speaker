@@ -18,13 +18,45 @@ Have a look at the <a href="CHANGELOG.md">CHANGELOG.md</a> file.
 
 ### Installation:
 
-1. Install the infrastructure:
-    `apt install espeak-ng xsel python3`
-2. Copy the two executable scripts into your home bin directory:
-    `cp clipboard-speaker clipboard-speaker-kill ~/bin/`
-3. Add the key bindings in (if you use Gnome. If you don't, look up how to
+#### Install the infrastructure:
+
+##### On Debian based systems:
+
+`apt install espeak-ng xsel python3`
+
+#### Install the script files:
+
+##### Manually:
+
+Copy the two executable scripts into your home bin directory:
+
+```
+cp clipboard_speaker/clipboard_speaker.py ~/bin/clipboard-speaker
+cp clipboard_speaker/clipboard_speaker_kill.py ~/bin/clipboard-speaker-kill
+```
+
+##### pip:
+
+```
+pip install --user .
+```
+
+After which the script files are located, at least here in my system, under
+`~/.local/bin/` as `~/.local/bin/clipboard-speak` and
+`~/.local/bin/clipboard-speak-kill`.
+
+#### Map your keybindings:
+
+##### On Gnome:
+
+Add the key bindings in (if you use Gnome. If you don't, look up how to
     assign scripts to keybindings in your own window manager):
-    `Gnome Settings → Keyboard Shortcuts → All the way down and press the + button`
+
+```
+Gnome Settings
+    → Keyboard Shortcuts
+    → All the way down and press the + button
+```
 
 ### Usage:
 

@@ -25,7 +25,7 @@ def get_words_per_minute() -> str:
     return words_per_minute
 
 
-if __name__ == "__main__":
+def main() -> None:
     words_per_minute = get_words_per_minute()
     try:
         os.mkfifo(FIFO_FILE_PATH, mode=0o600)
@@ -61,3 +61,7 @@ if __name__ == "__main__":
             os.remove(PID_FILE_PATH)
 
         os.remove(PID_FILE_PATH)
+
+
+if __name__ == "__main__":
+    main()
