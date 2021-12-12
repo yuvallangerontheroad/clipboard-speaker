@@ -26,6 +26,8 @@ def get_words_per_minute() -> str:
 
 
 def main() -> None:
+    if not CLIPBOARD_SPEAKER_PATH.exists():
+        CLIPBOARD_SPEAKER_PATH.mkdir(mode=500)
     words_per_minute = get_words_per_minute()
     try:
         os.mkfifo(FIFO_FILE_PATH, mode=0o600)
