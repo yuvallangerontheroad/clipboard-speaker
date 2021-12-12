@@ -18,7 +18,13 @@ Have a look at the <a href="CHANGELOG.md">CHANGELOG.md</a> file.
 
 ### Installation:
 
-#### Install the infrastructure:
+#### Dependencies:
+
+* https://python.org/
+* https://github.com/espeak-ng/espeak-ng/
+* https://github.com/kfish/xsel
+
+#### Install the Dependencies:
 
 ##### On Debian based systems:
 
@@ -73,9 +79,15 @@ Gnome Settings
 
 ## Older shell version:
 
+### Dependencies:
+
+* http://software.clapper.org/daemonize/
+* https://github.com/espeak-ng/espeak-ng/
+* https://github.com/kfish/xsel
+
 ### Installation:
 
-1. Install the infrastructure:
+1. Install the dependencies:
     `apt install daemonize espeak-ng xsel`
 2. Copy the two executable scripts into your home bin directory:
     `cp clipboard-speaker clipboard-speaker-kill ~/bin/`
