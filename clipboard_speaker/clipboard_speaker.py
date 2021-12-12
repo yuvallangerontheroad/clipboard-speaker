@@ -14,15 +14,14 @@ WORDS_PER_MINUTE_PATH = CLIPBOARD_SPEAKER_PATH / "words-per-minute"
 
 
 def get_words_per_minute() -> str:
-    if not WORDS_PER_MINUTE_PATH.exists():
+    if WORDS_PER_MINUTE_PATH.exists():
+        with WORDS_PER_MINUTE_PATH.open("r") as words_per_minute_file:
+            words_per_minute = words_per_minute_file.read().strip()
+        return words_per_minute
+    else:
         with WORDS_PER_MINUTE_PATH.open("w") as words_per_minute_file:
             words_per_minute_file.write(DEFAULT_WORDS_PER_MINUTE)
             return DEFAULT_WORDS_PER_MINUTE
-
-    with WORDS_PER_MINUTE_PATH.open("r") as words_per_minute_file:
-        words_per_minute = words_per_minute_file.read().strip()
-
-    return words_per_minute
 
 
 def main() -> None:
