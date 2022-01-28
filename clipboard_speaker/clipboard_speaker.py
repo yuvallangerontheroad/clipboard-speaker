@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
+import argparse
 import os
+import sys
 from pathlib import Path
 from subprocess import Popen, PIPE
 
@@ -24,7 +26,35 @@ def get_words_per_minute() -> str:
             return DEFAULT_WORDS_PER_MINUTE
 
 
+def get_argparse_options():
+    parser = argparse.ArgumentParser()
+
+    group = parser.add_mutually_exclusive_group(required=True)
+
+    group.add_argument(
+        "-p",
+        "--primary",
+        help="Read the mouse selection kind of clipboard.",
+        action='store_true',
+    )
+
+    group.add_argument(
+        "-b",
+        "--clipboard",
+        help="Read the ctrl-c kind of clipboard.",
+        action='store_true',
+    )
+
+    args = parser.parse_args()
+
+    print(args)
+
+    return args
+
+
 def main() -> None:
+    commandline_args = get_argparse_options()
+
     if not CLIPBOARD_SPEAKER_PATH.exists():
         CLIPBOARD_SPEAKER_PATH.mkdir(mode=500)
     words_per_minute = get_words_per_minute()
@@ -37,10 +67,16 @@ def main() -> None:
     fifo_read_file = os.open(FIFO_FILE_PATH, os.O_RDONLY | os.O_NONBLOCK)
     fifo_write_file = os.open(FIFO_FILE_PATH, os.O_WRONLY)
 
-    Popen(
-        ["xsel", "-p"],
-        stdout=fifo_write_file,
-    )
+    if commandline_args.primary:
+        Popen(
+            ["xsel", "-p"],
+            stdout=fifo_write_file,
+        )
+    elif commandline_args.clipboard:
+        Popen(
+            ["xsel", "-b"],
+            stdout=fifo_write_file,
+        )
     os.close(fifo_write_file)
 
     if not PID_FILE_PATH.exists():

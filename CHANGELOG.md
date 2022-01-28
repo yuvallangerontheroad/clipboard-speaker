@@ -1,3 +1,9 @@
+## 2022-01-28
+
+Add the command line options `-p` (`--primary`) and `-b` (`--clipboard`).
+`--clipboard` for the ctrl-c kind of clipboard and `--primary` for the mouse
+selection kind of clipboard.
+
 ## 2021-11-27
 
 Turn it into a Python package by adding a setup.py and sticking the files into
