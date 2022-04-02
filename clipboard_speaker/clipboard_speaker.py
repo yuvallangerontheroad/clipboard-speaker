@@ -26,7 +26,7 @@ def get_words_per_minute() -> str:
             return DEFAULT_WORDS_PER_MINUTE
 
 
-def get_argparse_options():
+def get_argparse_options() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
 
     group = parser.add_mutually_exclusive_group(required=True)
@@ -35,19 +35,17 @@ def get_argparse_options():
         "-p",
         "--primary",
         help="Read the mouse selection kind of clipboard.",
-        action='store_true',
+        action="store_true",
     )
 
     group.add_argument(
         "-b",
         "--clipboard",
         help="Read the ctrl-c kind of clipboard.",
-        action='store_true',
+        action="store_true",
     )
 
     args = parser.parse_args()
-
-    print(args)
 
     return args
 
@@ -64,40 +62,53 @@ def main() -> None:
         pass
 
     # https://stackoverflow.com/questions/63132778/how-to-use-fifo-named-pipe-as-stdin-in-popen-python
-    fifo_read_file = os.open(FIFO_FILE_PATH, os.O_RDONLY | os.O_NONBLOCK)
-    fifo_write_file = os.open(FIFO_FILE_PATH, os.O_WRONLY)
+    with os.fdopen(
+        os.open(FIFO_FILE_PATH, os.O_RDONLY | os.O_NONBLOCK), "r"
+    ) as fifo_read_file, os.fdopen(
+        os.open(FIFO_FILE_PATH, os.O_WRONLY), "w"
+    ) as fifo_write_file:
 
-    if commandline_args.primary:
-        Popen(
-            ["xsel", "-p"],
-            stdout=fifo_write_file,
-        )
-    elif commandline_args.clipboard:
-        Popen(
-            ["xsel", "-b"],
-            stdout=fifo_write_file,
-        )
-    os.close(fifo_write_file)
+        if commandline_args.primary:
+            xsel_process = Popen(
+                ["xsel", "-p"],
+                stdout=PIPE,
+            )
+        elif commandline_args.clipboard:
+            xsel_process = Popen(
+                ["xsel", "-b"],
+                stdout=PIPE,
+            )
 
-    if not PID_FILE_PATH.exists():
-        speak_ng_process = Popen(
-            [
-                "speak-ng",
-                f"-s {words_per_minute}",
-            ],
-            stdin=fifo_read_file,
-        )
-        os.close(fifo_read_file)
+        # Replace each newline and each consecutive newlines with a single space.
+        message = b" ".join(
+            line.strip() for line in xsel_process.stdout for line in line.split(b"\n")
+        ).decode("utf-8")
 
-        with PID_FILE_PATH.open("w") as pid_file:
-            pid_file.write(str(speak_ng_process.pid))
+        # Write to the fifo with a newline as a good luck token. (it may or may
+        # not be what will make it show up immediately on the other side…)
+        fifo_write_file.write(message + "\n")
 
-        try:
-            speak_ng_process.wait()
-        except KeyboardInterrupt as e:
+        # We make sure that things are written right now by flushing them down.
+        fifo_write_file.flush()
+
+        if not PID_FILE_PATH.exists():
+            speak_ng_process = Popen(
+                [
+                    "speak-ng",
+                    f"-s {words_per_minute}",
+                ],
+                stdin=fifo_read_file,
+            )
+
+            with PID_FILE_PATH.open("w") as pid_file:
+                pid_file.write(str(speak_ng_process.pid))
+
+            try:
+                speak_ng_process.wait()
+            except KeyboardInterrupt as e:
+                os.remove(PID_FILE_PATH)
+
             os.remove(PID_FILE_PATH)
-
-        os.remove(PID_FILE_PATH)
 
 
 if __name__ == "__main__":
