@@ -84,6 +84,8 @@ def main() -> None:
             line.strip() for line in xsel_process.stdout for line in line.split(b"\n")
         ).decode("utf-8")
 
+        print(message)
+
         # Write to the fifo with a newline as a good luck token. (it may or may
         # not be what will make it show up immediately on the other side…)
         fifo_write_file.write(message + "\n")
