@@ -1,3 +1,10 @@
+## 2022-04-02
+
+Wrap the file numbers returned by `os.open()` inside a file object using
+`os.fdopen()` and use them in a context manager with the `with` statement. That
+seems to have solved (some of?) the FIFO buffering problems mentioned in
+<https://codeberg.org/yuvallangerontheroad/clipboard-speaker/issues/1>.
+
 ## 2022-01-28
 
 Add the command line options `-p` (`--primary`) and `-b` (`--clipboard`).
