@@ -10,6 +10,17 @@ disabilities. I use it every day to read.
 
 It basically reads whatever you mark with your mouse cursor.
 
+## Code repositories:
+
+Main development repository is on codeberg.org:
+
+https://codeberg.org/yuvallangerontheroad/clipboard-speaker/
+
+Mirrors:
+
+* https://gitlab.com/yuvallangerontheroad/clipboard-speaker/
+* https://github.com/yuvallangerontheroad/clipboard-speaker/
+
 ## Changelog:
 
 Have a look at the <a href="CHANGELOG.md">CHANGELOG.md</a> file.
@@ -99,13 +110,3 @@ Gnome Settings
 1. Select some text.
 2. Press the keybinding to start `clipboard-reader`. Your computer is now speaking the stuff in the selection.
 3. (optional) Press the other keybinding to start `clipboard-reader-kill` and make computer stop speaking.
-
-## Repository:
-
-Main one is on codeberg.org:
-
-https://codeberg.org/yuvallangerontheroad/clipboard-speaker/
-
-Mirrors:
-
-* https://gitlab.com/yuvallangerontheroad/clipboard-speaker/
