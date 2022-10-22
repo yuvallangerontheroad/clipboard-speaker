@@ -20,6 +20,8 @@ Mirrors:
 
 * https://gitlab.com/yuvallangerontheroad/clipboard-speaker/
 * https://github.com/yuvallangerontheroad/clipboard-speaker/
+* https://gitlab.com/yuvallanger/clipboard-speaker/
+* https://github.com/yuvallanger/clipboard-speaker/
 
 ## Changelog:
 
