@@ -14,10 +14,11 @@ It basically reads whatever you mark with your mouse cursor.
 
 Main development repository is on codeberg.org:
 
-https://codeberg.org/yuvallangerontheroad/clipboard-speaker/
+https://git.sr.ht/~kakafarm/clipboard-speaker/
 
 Mirrors:
 
+* https://codeberg.org/yuvallangerontheroad/clipboard-speaker/
 * https://gitlab.com/yuvallangerontheroad/clipboard-speaker/
 * https://github.com/yuvallangerontheroad/clipboard-speaker/
 * https://gitlab.com/yuvallanger/clipboard-speaker/

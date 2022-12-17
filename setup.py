@@ -13,7 +13,7 @@ setup(
     long_description=readme,
     author="Yuval Langer",
     author_email="yuval.langer@gmail.com",
-    url="https://gitlab.com/yuvallangerontheroad/clipboard-speaker",
+    url="https://git.sr.ht/~kakafarm/clipboard-speaker",
     license=license,
     entry_points={
         "console_scripts": [
